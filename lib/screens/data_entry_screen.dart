@@ -23,6 +23,7 @@ class _DataEntryScreenState extends State<DataEntryScreen> {
   double currentBitcoinPrice = 100000.0;
   double percentStopLoss = 0.0;
   double stopLossPrice = 0.0;
+  double chancesLeft = 0;
 
   TextEditingController _percentStopLossController = TextEditingController();
   TextEditingController _currentPriceController = TextEditingController();
@@ -111,7 +112,7 @@ class _DataEntryScreenState extends State<DataEntryScreen> {
               )),
           Container(
             margin: EdgeInsets.all(10),
-            child: const Text('Acceptable Risk Level:',
+            child: const Text('Select Acceptable Risk Level:',
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
           ),
           Container(
@@ -240,7 +241,7 @@ class _DataEntryScreenState extends State<DataEntryScreen> {
                 }
                 print(positionSize.toString());
 
-                positionType = Random().nextBool() ? 'Long' : 'Short';
+                positionType = Random().nextBool() ? 'LONG' : 'SHORT';
                 print(positionType);
 
                 currentBitcoinPrice =
@@ -249,15 +250,19 @@ class _DataEntryScreenState extends State<DataEntryScreen> {
                 print(currentBitcoinPrice.toString());
                 print(percentStopLoss.toString());
 
-                if (positionType == 'Long') {
+                if (positionType == 'LONG') {
                   stopLossPrice =
                       currentBitcoinPrice * (1 - percentStopLoss / 100);
                 } else {
                   stopLossPrice =
                       currentBitcoinPrice * (1 + (percentStopLoss / 100));
                 }
-                ;
                 print(stopLossPrice.toString());
+
+                double amountAfterLoss = positionSize * (1- (percentStopLoss/100));
+                print(amountAfterLoss.toString());
+                chancesLeft = totalBalance/amountAfterLoss;
+                print(chancesLeft.toString());
 
                 Navigator.push(
                     context,
@@ -265,7 +270,8 @@ class _DataEntryScreenState extends State<DataEntryScreen> {
                       builder: (context) => ResultScreen(
                           positionSize: positionSize,
                           positionType: positionType,
-                          stopLossPrice: stopLossPrice),
+                          stopLossPrice: stopLossPrice,
+                          chancesLeft: chancesLeft),
                     ));
               },
             ),

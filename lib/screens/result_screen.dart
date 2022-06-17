@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 class ResultScreen extends StatelessWidget {
-  const ResultScreen({required this.positionSize, required this.positionType, required this.stopLossPrice});
+  const ResultScreen({required this.positionSize, required this.positionType, required this.stopLossPrice, required this.chancesLeft});
 
   final double positionSize;
   final String positionType;
   final double stopLossPrice;
+  final double chancesLeft;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,15 @@ class ResultScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: Text(
-                'You should open a ' + positionType + ' position \n with a position size of ' + positionSize.ceil().toString() + ' USD. \n And set the stop loss at the price ' + stopLossPrice.ceil().toString()+ '.',
+                'You should open a $positionType position \n with a position size of ${positionSize.ceil()} USD. \n And set the stop loss at the price ${stopLossPrice.ceil()}.',
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text(
+                'If you lose, you still have ${chancesLeft.ceil()} chances left to use this trading strategy.',
                 style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                 textAlign: TextAlign.center,
               ),
